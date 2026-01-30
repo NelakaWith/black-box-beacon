@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { PulseService } from './pulse.service';
 import { Pulse } from './entities/pulse.entity';
 
@@ -18,6 +19,15 @@ describe('PulseService', () => {
             find: jest.fn(),
             findOne: jest.fn(),
             remove: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn((key: string) => {
+              if (key === 'GROQ_API_KEY') return 'test-api-key';
+              return null;
+            }),
           },
         },
       ],
