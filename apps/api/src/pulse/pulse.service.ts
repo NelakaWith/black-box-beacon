@@ -35,16 +35,22 @@ export class PulseService {
   ) {
     this.groq = new Groq({
       apiKey: this.configService.get<string>('GROQ_API_KEY'),
+      baseURL: this.configService.get<string>(
+        'GROQ_API_URL',
+        'https://api.groq.com',
+      ),
     });
     this.groqModel = this.configService.get<string>(
       'GROQ_MODEL',
       'llama-3.3-70b-versatile',
     );
-    this.groqTemperature = this.configService.get<number>(
-      'GROQ_TEMPERATURE',
-      0.5,
+    this.groqTemperature = parseFloat(
+      this.configService.get<string>('GROQ_TEMPERATURE', '0.5'),
     );
-    this.groqMaxTokens = this.configService.get<number>('GROQ_MAX_TOKENS', 150);
+    this.groqMaxTokens = parseInt(
+      this.configService.get<string>('GROQ_MAX_TOKENS', '1024'),
+      10,
+    );
   }
 
   async createPulse(createPulseDto: CreatePulseDto): Promise<Pulse> {
