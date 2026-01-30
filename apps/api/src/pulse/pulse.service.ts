@@ -1,8 +1,13 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pulse } from './entities/pulse.entity';
 import { CreatePulseDto } from './dto/create-pulse.dto';
+import { UpdatePulseDto } from './dto/update-pulse.dto';
 
 @Injectable()
 export class PulseService {
@@ -42,6 +47,98 @@ export class PulseService {
       // Log error internally but throw user-friendly exception
       throw new InternalServerErrorException(
         'Transmission failed to commit to the Black Box. ::' +
+          (error as Error).message,
+      );
+    }
+  }
+
+  /**
+   * Retrieves all pulses from the Black Box.
+   */
+  async findAll(): Promise<Pulse[]> {
+    try {
+      return await this.pulseRepository.find({
+        order: { timestamp: 'DESC' },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to retrieve pulses from the Black Box. ::' +
+          (error as Error).message,
+      );
+    }
+  }
+
+  /**
+   * Retrieves a specific pulse by ID.
+   */
+  async findOne(id: string): Promise<Pulse> {
+    try {
+      const pulse = await this.pulseRepository.findOne({ where: { id } });
+      if (!pulse) {
+        throw new NotFoundException(
+          `Pulse with ID ${id} not found in the Black Box.`,
+        );
+      }
+      return pulse;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'Failed to retrieve pulse from the Black Box. ::' +
+          (error as Error).message,
+      );
+    }
+  }
+
+  /**
+   * Updates a pulse in the Black Box.
+   */
+  async update(id: string, updatePulseDto: UpdatePulseDto): Promise<Pulse> {
+    try {
+      const pulse = await this.findOne(id);
+
+      if (updatePulseDto.content) {
+        pulse.contentEncrypted = updatePulseDto.content;
+        // Re-evaluate crisis check and AI response if content changed
+        const isCrisis = this.checkForCrisis(updatePulseDto.content);
+        if (isCrisis) {
+          pulse.aiEchoResponse =
+            "The weight you're describing is too much for one person. My logic cannot carry this, but these humans can: [Resource Link]. Please stay with us.";
+        } else {
+          pulse.aiEchoResponse = this.generateEcho(updatePulseDto.content);
+        }
+      }
+
+      if (updatePulseDto.metadata) {
+        pulse.metadata = { ...pulse.metadata, ...updatePulseDto.metadata };
+      }
+
+      return await this.pulseRepository.save(pulse);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'Failed to update pulse in the Black Box. ::' +
+          (error as Error).message,
+      );
+    }
+  }
+
+  /**
+   * Removes a pulse from the Black Box.
+   */
+  async remove(id: string): Promise<void> {
+    try {
+      const pulse = await this.findOne(id);
+      await this.pulseRepository.remove(pulse);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'Failed to remove pulse from the Black Box. ::' +
           (error as Error).message,
       );
     }
