@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  /* The "Black Box" foundation */
+  --color-background: oklch(12.67% 0.01 222);
+  --color-foreground: oklch(98% 0.01 210);
+
+  /* The "Cold Signal" primary - Technical Cyan */
+  --color-primary: oklch(65% 0.2 199);
+  --color-primary-foreground: oklch(98% 0.01 210);
+
+  /* Mapping Shadcn-style semantic variables */
+  --color-border: oklch(25% 0.02 217);
+  --color-input: oklch(25% 0.02 217);
+  --color-ring: oklch(65% 0.2 199);
+
+  /* Typography */
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Animation */
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Base styles for Shadcn-Vue compatibility */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}

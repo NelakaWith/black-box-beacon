@@ -1,38 +1,47 @@
-import tailwindcssAnimate from "tailwindcss-animate";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: ["class"],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: { "2xl": "1400px" },
+    },
     extend: {
       colors: {
-        // The "Beacon" colors - representing the signal in the dark
-        beacon: {
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#38bdf8",
-          500: "#0ea5e9", // Primary Signal Blue (Sky 500)
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
-          950: "#082f49",
+        // Shadcn HSL variable mapping
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
-        // The "Black Box" colors - the sturdy, dark foundation
-        background: "#0a0a0a", // Deeper than standard neutral-950
-        surface: "#171717",
-        border: "#262626",
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        // Custom Beacon Identity
+        beacon: {
+          glow: "#0ea5e9",
+          muted: "#075985",
+        },
       },
       fontFamily: {
-        // Mono for that "Flight Recorder / Terminal" feel
-        mono: ["JetBrains Mono", "Fira Code", "ui-monospace", "monospace"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        // Terminal-style monospace for data-heavy views
+        mono: ["JetBrains Mono", "Fira Code", ...fontFamily.mono],
+        sans: ["Inter", ...fontFamily.sans],
       },
-      animation: {
-        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [require("tailwindcss-animate")],
 };
