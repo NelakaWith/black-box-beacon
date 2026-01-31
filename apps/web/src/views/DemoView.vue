@@ -82,6 +82,7 @@
           >
             Beacon Button
           </button>
+          <Button variant="destructive"> Shadcn Button </Button>
           <div class="bg-surface border border-border p-4 rounded">
             <input
               type="text"
@@ -96,5 +97,6 @@
 </template>
 
 <script setup lang="ts">
+import { Button } from "@repo/ui";
 // No script needed for this demo
 </script>

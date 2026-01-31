@@ -6,17 +6,25 @@
      OKLCH is perceptually uniform, meaning the human eye perceives the
      same level of "darkness" even as hues shift. For an 'Empathetic Realist'
      UI, this prevents the background from feeling 'flat' or 'muddy' across
-     different monitor types.
+     different monitor types and prevents 'graying out' in dark environments.
   */
-  --color-background: oklch(12.67% 0.01 222); /* Industrial Midnight */
+  --color-background: oklch(
+    12.67% 0.01 222
+  ); /* Industrial Midnight: Deep Ink */
   --color-foreground: oklch(98% 0.01 210);
+
+  /* Surface layers for cards and elevated panels */
+  --color-surface: oklch(18% 0.012 222);
+  --color-surface-bright: oklch(22% 0.015 222);
 
   /* --- THE COLD SIGNAL: BEACON SCALE ---
      This 50-950 scale replaces the manual JS color extension.
      In TW4, simply defining --color-beacon-500 automatically generates
-     the 'bg-beacon-500' and 'text-beacon-500' utility classes. This
-     palette represents a technical, sturdy witness—a flickering cyan
-     LED in a silent dark room.
+     the 'bg-beacon-500' and 'text-beacon-500' utility classes.
+
+     This palette represents a technical, sturdy witness—a flickering cyan
+     LED in a silent dark room. We move away from warm ambers toward
+     colder, maritime signal colors to emphasize objectivity.
   */
   --color-beacon-50: #f0f9ff;
   --color-beacon-100: #e0f2fe;
@@ -31,21 +39,32 @@
   --color-beacon-950: #082f49;
 
   /* --- BEACON IDENTITY VARIANTS ---
-     Beyond the standard scale, we define specific semantic aliases:
-     - GLOW: High-intensity cyan used for active status pulses.
-     - MUTED: Low-intensity navy used for background signals and depth.
+     Beyond the standard scale, we define specific semantic aliases for
+     visual intensity and state-driven feedback:
+     - GLOW: High-intensity cyan used for active status pulses and the 'Witness' presence.
+     - MUTED: Low-intensity navy used for background signals, depth, and inactive states.
+     - ERROR: A technical red, used sparingly for link failures or critical alerts.
   */
   --color-beacon-glow: #0ea5e9;
   --color-beacon-muted: #075985;
+  --color-beacon-error: #ef4444;
 
   /* --- SHADCN SEMANTIC BRIDGE ---
-     Previously, you had to manually export these in a JS 'extend' block.
      Now, we map Shadcn's semantic requirements directly to our Beacon
      variables. This ensures that any Shadcn primitive you 'add' via CLI
      automatically adopts the Beacon identity without local CSS overrides.
   */
   --color-primary: var(--color-beacon-500);
   --color-primary-foreground: var(--color-foreground);
+
+  --color-secondary: var(--color-surface);
+  --color-secondary-foreground: var(--color-beacon-300);
+
+  --color-accent: var(--color-surface-bright);
+  --color-accent-foreground: var(--color-beacon-glow);
+
+  --color-muted: var(--color-surface);
+  --color-muted-foreground: oklch(65% 0.01 210);
 
   /* Borders and Inputs use OKLCH for precise, subtle contrast */
   --color-border: oklch(25% 0.02 217);
@@ -56,17 +75,25 @@
      We prioritize monospaced fonts to reinforce the feeling of an
      objective log. This typography choice suggests that every pulse
      entered is 'data' being committed to a sturdy flight recorder.
+
+     - Mono: For data, timestamps, and the 'Echo'.
+     - Sans: For high-level UI navigation and instructional text.
   */
   --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --font-sans: "Inter", system-ui, sans-serif;
+
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-widest: 0.25em;
 
   /* --- ANIMATION PROTOCOLS ---
      Subtle animations provide feedback without 'cheerleading' the user.
      - Pulse Slow: A rhythmic rise and fall of light, mimicking a heartbeat.
      - Flicker: A high-frequency technical artifact for error states or syncs.
+     - Scanning: A linear motion effect for background "data processing" states.
   */
   --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-signal-flicker: flicker 0.5s ease-in-out infinite;
+  --animate-scanning: scanning 2s linear infinite;
 
   @keyframes flicker {
     0%,
@@ -78,6 +105,15 @@
     }
     70% {
       opacity: 0.9;
+    }
+  }
+
+  @keyframes scanning {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(100%);
     }
   }
 }
@@ -95,19 +131,44 @@
     @apply bg-background text-foreground antialiased min-h-screen selection:bg-beacon-glow/30;
   }
 
+  /* Custom scrollbar for the "Black Box" aesthetic */
+  ::-webkit-scrollbar {
+    @apply w-1.5 bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full hover:bg-beacon-muted transition-colors;
+  }
+
   /* Standardizing borders across all workspace packages */
   * {
     @apply border-border;
+  }
+
+  /* Focus states for accessibility without breaking the dark theme */
+  :focus-visible {
+    @apply outline-none ring-1 ring-ring ring-offset-2 ring-offset-background;
   }
 }
 
 @layer utilities {
   /* --- CUSTOM GLOW ARCHITECTURE ---
-     We leverage standard CSS variables to create a soft, technical
-     outer glow for 'Beacon' status indicators. This mimics an LED
-     illuminating the surrounding hardware in the dark.
+     We leverage standard CSS variables to create soft, technical
+     outer glows and glass-morphism effects that match the flight recorder theme.
   */
   .shadow-beacon-pulse {
     box-shadow: 0 0 15px -3px var(--color-beacon-glow);
+  }
+
+  .text-signal-glow {
+    text-shadow: 0 0 8px var(--color-beacon-glow);
+  }
+
+  .glass-recorder {
+    @apply bg-surface/60 backdrop-blur-md border border-white/5;
+  }
+
+  /* Scanline effect utility */
+  .scanline {
+    @apply relative overflow-hidden after:absolute after:inset-0 after:bg-linear-to-b after:from-transparent after:via-beacon-glow/5 after:to-transparent after:animate-scanning;
   }
 }
