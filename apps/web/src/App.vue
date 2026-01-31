@@ -1,11 +1,25 @@
 <script setup lang="ts">
+import { useDark, useToggle } from '@vueuse/core';
+
 // PrimeVue Button is globally registered via the BlackBoxUI plugin
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 </script>
 
 <template>
   <div
     class="min-h-screen flex flex-col items-center justify-center bg-background text-foreground space-y-8 p-10"
   >
+    <div class="absolute top-4 right-4">
+      <Button
+        @click="toggleDark()"
+        :icon="isDark ? 'pi pi-moon' : 'pi pi-sun'"
+        :label="isDark ? 'Dark' : 'Light'"
+        variant="text"
+        severity="secondary"
+      />
+    </div>
+
     <div class="text-center space-y-2">
       <h1 class="text-3xl font-bold tracking-tight">PrimeVue x Black Box</h1>
       <p class="text-muted-foreground">Component System Verification</p>

@@ -9,16 +9,14 @@
 
 @theme {
   /* --- THE BLACK BOX FOUNDATION ---
-     We utilize OKLCH color space here instead of standard RGB or HEX.
-     OKLCH is perceptually uniform, preventing the background from
-     feeling 'flat' or 'muddy' across different monitor types.
+     OKLCH values are now mapped from dynamic CSS variables defined in @layer base
   */
-  --color-background: oklch(12.67% 0.01 222); /* Industrial Midnight: Deep Ink */
-  --color-foreground: oklch(98% 0.01 210);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
-  /* Surface layers for cards and elevated panels */
-  --color-surface: oklch(18% 0.012 222);
-  --color-surface-bright: oklch(22% 0.015 222);
+  /* Surface layers */
+  --color-surface: var(--surface);
+  --color-surface-bright: var(--surface-bright);
 
   /* --- THE COLD SIGNAL: BEACON SCALE ---
      Defining this 50-950 scale automatically generates
@@ -58,8 +56,8 @@
   --color-muted-foreground: oklch(65% 0.01 210);
 
   /* Borders and Inputs */
-  --color-border: oklch(25% 0.02 217);
-  --color-input: oklch(25% 0.02 217);
+  --color-border: var(--border);
+  --color-input: var(--input);
   --color-ring: var(--color-beacon-glow);
 
   /* --- TYPOGRAPHY: THE FLIGHT RECORDER --- */
@@ -87,6 +85,30 @@
 }
 
 @layer base {
+  :root {
+    /* LIGHT MODE DEFAULTS (Clean, Paper-like) */
+    --background: oklch(98.5% 0 0);
+    --foreground: oklch(14% 0.005 285);
+
+    --surface: oklch(96% 0 0);
+    --surface-bright: oklch(94% 0 0);
+
+    --border: oklch(90% 0 0);
+    --input: oklch(90% 0 0);
+  }
+
+  .dark {
+    /* DARK MODE (Industrial Midnight) */
+    --background: oklch(12.67% 0.01 222);
+    --foreground: oklch(98% 0.01 210);
+
+    --surface: oklch(18% 0.012 222);
+    --surface-bright: oklch(22% 0.015 222);
+
+    --border: oklch(25% 0.02 217);
+    --input: oklch(25% 0.02 217);
+  }
+
   /* Prevent the 'White Flash' by applying background to the root immediately */
   html, body, #app {
     @apply bg-background text-foreground font-sans antialiased min-h-screen selection:bg-beacon-glow/30;
