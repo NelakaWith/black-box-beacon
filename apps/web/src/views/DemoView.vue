@@ -5,7 +5,9 @@
       class="flex items-center justify-between border-b border-ui-border pb-6 scanline"
     >
       <div class="flex items-center gap-4">
-        <RadioIcon class="text-beacon-500 animate-pulse-slow w-8 h-8" />
+        <i
+          class="pi pi-broadcast text-beacon-500 animate-pulse-slow text-2xl"
+        />
         <div>
           <h1 class="text-xl font-bold tracking-widest uppercase">Beacon_OS</h1>
           <p class="text-[9px] text-beacon-muted uppercase tracking-[0.4em]">
@@ -24,7 +26,7 @@
               class="text-[10px] uppercase text-neutral-500 tracking-[0.3em]"
               >Primary Input Stream</span
             >
-            <TerminalIcon class="w-3 h-3 text-neutral-700" />
+            <i class="pi pi-terminal text-xs text-neutral-700" />
           </div>
 
           <!-- PrimeVue Textarea -->
@@ -71,7 +73,7 @@
             <div
               class="text-[10px] uppercase tracking-[0.3em] text-beacon-500 font-bold mb-4 flex items-center gap-2"
             >
-              <ShieldIcon class="w-4 h-4" />
+              <i class="pi pi-shield text-base" />
               Survival_Telemetry
             </div>
           </template>
@@ -87,8 +89,11 @@
                   class="text-[10px] uppercase tracking-widest text-neutral-500 group-hover:text-neutral-300"
                   >{{ key }}</span
                 >
-                <CheckCircleIcon v-if="val" class="w-4 h-4 text-beacon-500" />
-                <CircleIcon v-else class="w-4 h-4 text-neutral-800" />
+                <i
+                  v-if="val"
+                  class="pi pi-check-circle text-base text-beacon-500"
+                />
+                <i v-else class="pi pi-circle text-base text-neutral-800" />
               </button>
             </div>
           </template>
@@ -107,15 +112,6 @@
 
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import {
-  Radio as RadioIcon,
-  Send as SendIcon,
-  Terminal as TerminalIcon,
-  ShieldCheck as ShieldIcon,
-  CheckCircle2 as CheckCircleIcon,
-  Circle as CircleIcon,
-} from "lucide-vue-next";
-
 // PrimeVue components are used here
 // Note: These are registered globally by your BlackBoxUI plugin
 const transmission = ref("");
