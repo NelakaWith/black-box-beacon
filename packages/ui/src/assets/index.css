@@ -41,22 +41,23 @@
   --color-beacon-muted: #075985;
   --color-beacon-error: #ef4444;
 
-  /* --- SHADCN SEMANTIC BRIDGE ---
-     Mappings that allow Shadcn primitives to adopt the Beacon identity.
-  */
+  /* --- SEMANTIC TOKENS --- */
+  /* Main Brand Color - affects buttons, links, active states */
   --color-primary: var(--color-beacon-500);
   --color-primary-foreground: var(--color-foreground);
 
+  /* Secondary / Surface elements */
   --color-secondary: var(--color-surface);
   --color-secondary-foreground: var(--color-beacon-300);
 
+  /* Accents & Highlights */
   --color-accent: var(--color-surface-bright);
   --color-accent-foreground: var(--color-beacon-glow);
 
   --color-muted: var(--color-surface);
   --color-muted-foreground: oklch(65% 0.01 210);
 
-  /* Precise contrast using OKLCH for borders and inputs */
+  /* Borders and Inputs */
   --color-border: oklch(25% 0.02 217);
   --color-input: oklch(25% 0.02 217);
   --color-ring: var(--color-beacon-glow);
@@ -88,7 +89,7 @@
 @layer base {
   /* Prevent the 'White Flash' by applying background to the root immediately */
   html, body, #app {
-    @apply bg-background text-foreground antialiased min-h-screen selection:bg-beacon-glow/30;
+    @apply bg-background text-foreground font-sans antialiased min-h-screen selection:bg-beacon-glow/30;
   }
 
   /* Custom scrollbar for the "Black Box" aesthetic */

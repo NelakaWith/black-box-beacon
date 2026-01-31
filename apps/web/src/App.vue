@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+// PrimeVue Button is globally registered via the BlackBoxUI plugin
 </script>
 
 <template>
-  <div class="min-h-screen bg-background text-foreground p-10 space-y-4">
-    <h1 class="text-2xl font-bold">PrimeVue Migration Test</h1>
-    <div class="flex gap-4 p-4 border border-white/10 rounded-lg">
+  <div
+    class="min-h-screen flex flex-col items-center justify-center bg-background text-foreground space-y-8 p-10"
+  >
+    <div class="text-center space-y-2">
+      <h1 class="text-3xl font-bold tracking-tight">PrimeVue x Black Box</h1>
+      <p class="text-muted-foreground">Component System Verification</p>
+    </div>
+
+    <!-- Usage of globally registered Button component -->
+    <div
+      class="flex flex-wrap gap-4 p-8 border border-border rounded-xl bg-surface/50 backdrop-blur-sm justify-center max-w-2xl"
+    >
       <Button label="Primary" />
       <Button label="Secondary" severity="secondary" />
       <Button label="Success" severity="success" />
@@ -16,9 +25,12 @@ import { RouterView } from 'vue-router'
       <Button label="Contrast" severity="contrast" />
     </div>
 
-    <RouterView />
+    <div class="inline">
+      <Button label="Small" size="small" variant="outlined" />
+      <Button label="Normal" variant="outlined" />
+      <Button label="Large" size="large" variant="outlined" />
+    </div>
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
