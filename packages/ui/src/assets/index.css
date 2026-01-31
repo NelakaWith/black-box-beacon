@@ -1,33 +1,113 @@
 @import "tailwindcss";
 
 @theme {
-  /* The "Black Box" foundation */
-  --color-background: oklch(12.67% 0.01 222);
+  /* --- THE BLACK BOX FOUNDATION ---
+     We utilize OKLCH color space here instead of standard RGB or HEX.
+     OKLCH is perceptually uniform, meaning the human eye perceives the
+     same level of "darkness" even as hues shift. For an 'Empathetic Realist'
+     UI, this prevents the background from feeling 'flat' or 'muddy' across
+     different monitor types.
+  */
+  --color-background: oklch(12.67% 0.01 222); /* Industrial Midnight */
   --color-foreground: oklch(98% 0.01 210);
 
-  /* The "Cold Signal" primary - Technical Cyan */
-  --color-primary: oklch(65% 0.2 199);
-  --color-primary-foreground: oklch(98% 0.01 210);
+  /* --- THE COLD SIGNAL: BEACON SCALE ---
+     This 50-950 scale replaces the manual JS color extension.
+     In TW4, simply defining --color-beacon-500 automatically generates
+     the 'bg-beacon-500' and 'text-beacon-500' utility classes. This
+     palette represents a technical, sturdy witness—a flickering cyan
+     LED in a silent dark room.
+  */
+  --color-beacon-50: #f0f9ff;
+  --color-beacon-100: #e0f2fe;
+  --color-beacon-200: #bae6fd;
+  --color-beacon-300: #7dd3fc;
+  --color-beacon-400: #38bdf8;
+  --color-beacon-500: #0ea5e9; /* Primary Technical Signal */
+  --color-beacon-600: #0284c7;
+  --color-beacon-700: #0369a1;
+  --color-beacon-800: #075985;
+  --color-beacon-900: #0c4a6e;
+  --color-beacon-950: #082f49;
 
-  /* Mapping Shadcn-style semantic variables */
+  /* --- BEACON IDENTITY VARIANTS ---
+     Beyond the standard scale, we define specific semantic aliases:
+     - GLOW: High-intensity cyan used for active status pulses.
+     - MUTED: Low-intensity navy used for background signals and depth.
+  */
+  --color-beacon-glow: #0ea5e9;
+  --color-beacon-muted: #075985;
+
+  /* --- SHADCN SEMANTIC BRIDGE ---
+     Previously, you had to manually export these in a JS 'extend' block.
+     Now, we map Shadcn's semantic requirements directly to our Beacon
+     variables. This ensures that any Shadcn primitive you 'add' via CLI
+     automatically adopts the Beacon identity without local CSS overrides.
+  */
+  --color-primary: var(--color-beacon-500);
+  --color-primary-foreground: var(--color-foreground);
+
+  /* Borders and Inputs use OKLCH for precise, subtle contrast */
   --color-border: oklch(25% 0.02 217);
   --color-input: oklch(25% 0.02 217);
-  --color-ring: oklch(65% 0.2 199);
+  --color-ring: var(--color-beacon-glow);
 
-  /* Typography */
+  /* --- TYPOGRAPHY: THE FLIGHT RECORDER ---
+     We prioritize monospaced fonts to reinforce the feeling of an
+     objective log. This typography choice suggests that every pulse
+     entered is 'data' being committed to a sturdy flight recorder.
+  */
   --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --font-sans: "Inter", system-ui, sans-serif;
 
-  /* Animation */
+  /* --- ANIMATION PROTOCOLS ---
+     Subtle animations provide feedback without 'cheerleading' the user.
+     - Pulse Slow: A rhythmic rise and fall of light, mimicking a heartbeat.
+     - Flicker: A high-frequency technical artifact for error states or syncs.
+  */
   --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-signal-flicker: flicker 0.5s ease-in-out infinite;
+
+  @keyframes flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    70% {
+      opacity: 0.9;
+    }
+  }
 }
 
-/* Base styles for Shadcn-Vue compatibility */
 @layer base {
+  /* --- GLOBAL RESET & APPLICATION ---
+     In a monorepo, preventing the 'White Flash' during hydration is
+     critical. By applying the background logic in the 'base' layer
+     rather than a specific component, the dark mode foundation is
+     injected immediately into the DOM root.
+  */
+  html,
+  body,
+  #app {
+    @apply bg-background text-foreground antialiased min-h-screen selection:bg-beacon-glow/30;
+  }
+
+  /* Standardizing borders across all workspace packages */
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
+}
+
+@layer utilities {
+  /* --- CUSTOM GLOW ARCHITECTURE ---
+     We leverage standard CSS variables to create a soft, technical
+     outer glow for 'Beacon' status indicators. This mimics an LED
+     illuminating the surrounding hardware in the dark.
+  */
+  .shadow-beacon-pulse {
+    box-shadow: 0 0 15px -3px var(--color-beacon-glow);
   }
 }
