@@ -59,6 +59,47 @@ const BlackBoxPreset = definePreset(Aura, {
       },
     },
   },
+  components: {
+    global: {
+      borderRadius: {
+        none: '0',
+        sm: '0.125rem',
+        md: '0.375rem',
+        lg: '0.5rem',
+        xl: '0.75rem'
+      }
+    },
+    inputtext: {
+      style: {
+         root: {
+            fontFamily: 'var(--font-mono)',
+            borderRadius: '{borderRadius.sm}'
+         }
+      }
+    },
+    textarea: {
+      style: {
+        root: {
+          fontFamily: 'var(--font-mono)',
+          borderRadius: '{borderRadius.sm}'
+        }
+      }
+    },
+    button: {
+      style: {
+        root: {
+          borderRadius: '{borderRadius.sm}'
+        }
+      }
+    },
+    card: {
+      style: {
+        root: {
+          borderRadius: '{borderRadius.sm}'
+        }
+      }
+    }
+  }
 });
 
 export const BlackBoxUI = {
