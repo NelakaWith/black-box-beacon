@@ -10,16 +10,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --max-warnings 0"
   },
-  "dependencies": {
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "lucide-vue-next": "^0.400.0",
-    "radix-vue": "^1.9.0",
-    "reka-ui": "^2.8.0",
-    "tailwind-merge": "^2.3.0"
-  },
   "devDependencies": {
-    "@repo/tailwind-config": "workspace:*",
     "@vitejs/plugin-vue": "^5.0.0",
     "autoprefixer": "^10.4.0",
     "tailwindcss": "^4.1.18",
@@ -30,5 +21,9 @@
   },
   "peerDependencies": {
     "vue": "^3.4.0"
+  },
+  "dependencies": {
+    "@primevue/themes": "^4.5.4",
+    "primevue": "^4.5.4"
   }
 }
