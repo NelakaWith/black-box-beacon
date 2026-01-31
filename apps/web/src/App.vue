@@ -19,13 +19,23 @@
         <h2 class="text-2xl font-mono text-beacon-300 mb-4">Beacon Colors</h2>
         <div class="grid grid-cols-5 gap-4">
           <div
-            v-for="shade in [
-              50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950,
+            v-for="color in [
+              { shade: 50, class: 'bg-beacon-50' },
+              { shade: 100, class: 'bg-beacon-100' },
+              { shade: 200, class: 'bg-beacon-200' },
+              { shade: 300, class: 'bg-beacon-300' },
+              { shade: 400, class: 'bg-beacon-400' },
+              { shade: 500, class: 'bg-beacon-500' },
+              { shade: 600, class: 'bg-beacon-600' },
+              { shade: 700, class: 'bg-beacon-700' },
+              { shade: 800, class: 'bg-beacon-800' },
+              { shade: 900, class: 'bg-beacon-900' },
+              { shade: 950, class: 'bg-beacon-950' },
             ]"
-            :key="shade"
-            :class="`bg-beacon-${shade} text-black p-4 rounded font-mono text-sm`"
+            :key="color.shade"
+            :class="`${color.class} text-black p-4 rounded font-mono text-sm`"
           >
-            beacon-{{ shade }}
+            beacon-{{ color.shade }}
           </div>
         </div>
       </section>
