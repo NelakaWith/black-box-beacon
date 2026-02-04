@@ -1,14 +1,16 @@
 <template>
   <!-- Header Section -->
   <header
-    class="flex items-center justify-between border-b border-white/5 py-6 px-8 scanline"
+    class="flex items-center justify-between border-b border-white/5 py-6 px-8 shadow-lg"
   >
     <div class="flex items-center gap-4">
       <i class="pi pi-broadcast text-beacon-500 animate-pulse-slow text-2xl" />
       <div>
-        <h1 class="text-xl font-bold tracking-widest uppercase">Beacon_OS</h1>
+        <h1 class="text-xl font-bold tracking-widest uppercase">
+          Beacon_Project
+        </h1>
         <div
-          class="text-[9px] text-beacon-500/50 uppercase tracking-[0.4em] mt-1 flex gap-2"
+          class="text-xs text-beacon-500/80 uppercase tracking-[0.4em] mt-1 flex gap-2"
         >
           <span>Sub-Level Survival Monitor</span>
           <span v-if="!online" class="text-red-500 animate-pulse"
