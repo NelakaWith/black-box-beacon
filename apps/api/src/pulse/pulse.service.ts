@@ -20,7 +20,7 @@ export class PulseService {
     1. VALIDATE: Acknowledge the user's feelings as factual and heavy.
     2. NO TOXIC POSITIVITY: Never say "it gets better" or "stay positive."
     3. OBSERVE: Treat their survival (metadata) as a significant technical achievement.
-    4. ANCHOR: Suggest one tiny, low-energy physical action (e.g., "Drink water").
+    4. ANCHOR: Suggest one tiny, low-energy physical action.
     Keep responses under 3 sentences. You are a witness, not a coach.
   `;
 
@@ -196,11 +196,18 @@ export class PulseService {
           max_tokens: this.groqMaxTokens,
         });
 
+        console.log('=== GROQ API RESPONSE ===');
+        console.log('Model:', chatCompletion.model);
+        console.log('Usage:', JSON.stringify(chatCompletion.usage, null, 2));
+        console.log('Response:', chatCompletion.choices[0]?.message?.content);
+        console.log('=========================');
+
         return (
           chatCompletion.choices[0]?.message?.content ||
           'Transmission logged. I am here.'
         );
       } catch (err) {
+        console.error(`Groq API Error (attempt ${i + 1}/${retries}):`, err);
         const delay = Math.pow(2, i) * 1000;
         if (i === retries - 1) throw err;
         await new Promise((res) => setTimeout(res, delay));
