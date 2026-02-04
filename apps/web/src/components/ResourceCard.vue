@@ -1,5 +1,5 @@
 <template>
-  <Card class="!bg-red-900/10 !border-l-2 !border-red-500 !shadow-[0_0_30px_-10px_rgba(239,68,68,0.3)] !rounded-none">
+  <Card class="bg-red-900/10! border-l-2! border-red-500! shadow-[0_0_30px_-10px_rgba(239,68,68,0.3)]! rounded-none!">
     <template #content>
       <div class="flex items-start gap-4 p-2">
         <i class="pi pi-exclamation-triangle text-red-500 text-xl animate-pulse" />
