@@ -17,14 +17,26 @@
         </div>
       </div>
     </div>
+    <div>
+      <Button
+        @click="toggleDark()"
+        :icon="isDark ? 'pi pi-moon' : 'pi pi-sun'"
+        :label="isDark ? 'Dark' : 'Light'"
+        variant="text"
+        severity="secondary"
+      />
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { useOnline } from "@vueuse/core";
+import { useOnline, useDark, useToggle } from "@vueuse/core";
 
 // Checklist #4: "Physical Anchor Hook"
 const online = useOnline();
+// PrimeVue Button is globally registered via the BlackBoxUI plugin
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 </script>
 
 <style></style>
