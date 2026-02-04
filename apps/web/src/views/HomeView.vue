@@ -25,10 +25,14 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import axios from "axios";
+import { useLocalStorage } from "@vueuse/core";
 import PulseInput from "@/components/PulseInput.vue";
 import SurvivalTelemetry from "@/components/SurvivalTelemetry.vue";
 import EchoFeed from "@/components/EchoFeed.vue";
 import ResourceCard from "@/components/ResourceCard.vue";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const isCrisisMode = ref(false);
 
@@ -38,11 +42,21 @@ interface Log {
   timestamp: Date;
 }
 
-const logs = ref<Log[]>([]);
+interface TelemetryData {
+  ate: boolean;
+  slept: boolean;
+  hydrated: boolean;
+}
 
-function handleCommit(content: string) {
+const logs = ref<Log[]>([]);
+const telemetry = useLocalStorage<TelemetryData>("black-box-telemetry", {
+  ate: false,
+  slept: false,
+  hydrated: false,
+});
+
+async function handleCommit(content: string) {
   // Simple UI Trigger for "Crisis Mode" (Checklist #4)
-  // In a real app, this would be more robust/server-side
   const crisisPattern = /(help|die|suicide|end it|hurt)/i;
 
   if (crisisPattern.test(content)) {
@@ -52,15 +66,38 @@ function handleCommit(content: string) {
 
   isCrisisMode.value = false;
 
-  // Simulate API delay/Store action
-  const newLog: Log = {
-    id: crypto.randomUUID(),
-    content: content,
-    timestamp: new Date(),
-  };
+  try {
+    // Send pulse to API
+    const response = await axios.post(`${API_URL}/pulse/transmit`, {
+      content: content,
+      metadata: {
+        survivalCheck: {
+          hydrated: telemetry.value.hydrated,
+          ate: telemetry.value.ate,
+          slept: telemetry.value.slept,
+        },
+      },
+    });
 
-  // Add to top of stack
-  logs.value.unshift(newLog);
+    // Add successful response to logs
+    const newLog: Log = {
+      id: response.data.id,
+      content: response.data.aiEchoResponse,
+      timestamp: new Date(response.data.timestamp),
+    };
+
+    logs.value.unshift(newLog);
+  } catch (error) {
+    console.error("Failed to transmit pulse:", error);
+
+    // Fallback: Add to local logs even if API fails
+    const newLog: Log = {
+      id: crypto.randomUUID(),
+      content: content,
+      timestamp: new Date(),
+    };
+    logs.value.unshift(newLog);
+  }
 }
 </script>
 
