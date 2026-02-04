@@ -1,9 +1,7 @@
 <template>
-  <div class="main-layout min-h-screen flex flex-col">
-    <header class="bg-primary text-primary-foreground p-4">
-      <h1 class="text-xl font-bold">Black Box Beacon</h1>
-    </header>
-    <main class="flex-1 p-4">
+  <div class="w-full main-layout min-h-screen flex flex-col">
+    <app-header />
+    <main class="flex-1 p-4 max-w-7xl mx-auto">
       <router-view />
     </main>
     <footer class="bg-muted p-4 text-center">
@@ -13,6 +11,8 @@
 </template>
 
 <script setup lang="ts">
+import AppHeader from "../components/AppHeader.vue";
+
 // Main layout component
 </script>
 

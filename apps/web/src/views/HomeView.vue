@@ -1,19 +1,5 @@
 <template>
-  <div class="space-y-10 font-mono p-4 md:p-8 max-w-7xl mx-auto pb-32">
-    <!-- Header Section -->
-    <header class="flex items-center justify-between border-b border-white/5 pb-6 scanline">
-      <div class="flex items-center gap-4">
-        <i class="pi pi-broadcast text-beacon-500 animate-pulse-slow text-2xl" />
-        <div>
-          <h1 class="text-xl font-bold tracking-widest uppercase">Beacon_OS</h1>
-          <div class="text-[9px] text-beacon-500/50 uppercase tracking-[0.4em] mt-1 flex gap-2">
-            <span>Sub-Level Survival Monitor</span>
-            <span v-if="!online" class="text-red-500 animate-pulse">! SIGNAL_LOST</span>
-          </div>
-        </div>
-      </div>
-    </header>
-
+  <div class="space-y-10 font-mono p-4 md:p-8 mx-auto pb-32">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
       <!-- Main Transmission Logic -->
       <div class="lg:col-span-2 space-y-12">
@@ -38,15 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useOnline } from '@vueuse/core';
-import PulseInput from '@/components/PulseInput.vue';
-import SurvivalTelemetry from '@/components/SurvivalTelemetry.vue';
-import EchoFeed from '@/components/EchoFeed.vue';
-import ResourceCard from '@/components/ResourceCard.vue';
+import { ref } from "vue";
+import PulseInput from "@/components/PulseInput.vue";
+import SurvivalTelemetry from "@/components/SurvivalTelemetry.vue";
+import EchoFeed from "@/components/EchoFeed.vue";
+import ResourceCard from "@/components/ResourceCard.vue";
 
-// Checklist #4: "Physical Anchor Hook"
-const online = useOnline();
 const isCrisisMode = ref(false);
 
 interface Log {
@@ -73,7 +56,7 @@ function handleCommit(content: string) {
   const newLog: Log = {
     id: crypto.randomUUID(),
     content: content,
-    timestamp: new Date()
+    timestamp: new Date(),
   };
 
   // Add to top of stack

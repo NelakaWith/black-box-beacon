@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen flex flex-col items-center justify-center bg-background text-foreground space-y-8 p-10"
+    class="min-h-screen flex flex-col items-center justify-center bg-background text-foreground space-y-8"
   >
     <div class="absolute top-4 right-4">
       <Button
